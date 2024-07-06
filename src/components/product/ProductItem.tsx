@@ -65,7 +65,8 @@ function ProductItem({ product }: Props) {
 export default ProductItem;
 
 const Container = styled.div`
-  border: 1px solid rgba(1,1,1, 0.2);
+  position: relative;
+  border: 1px solid rgba(1,1,1, 0.15);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 5px;
@@ -73,6 +74,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  //
+  transition: transform 300ms ease-in-out;
+
+  &:hover {
+    transform: translateX(-5px) translateY(-5px);
+  }
 `;
 export const ImgBlock = styled.div`
   height: 300px; 
@@ -93,7 +100,7 @@ export const Img = styled.img`
 `;
 const Title = styled.div`
 `;
-const Prise = styled.div`
+export const Prise = styled.div`
   text-decoration: line-through;
 `;
 const Text = styled.div`

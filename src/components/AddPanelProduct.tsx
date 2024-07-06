@@ -63,12 +63,15 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
         case 'number':
           fieldSchema = yup.number().typeError(`${input.placeholder} должно быть числом`).required(`${input.placeholder} обязателен`);
           break;
-        case 'url':
-          fieldSchema = yup
-            .string()
-            .url(`${input.placeholder} должно быть корректным URL`)
-            .required(`${input.placeholder} обязателен`);
-          break;
+        // case 'file':
+        //   fieldSchema = yup
+        //     .mixed()
+        //     .test('fileRequired', `${input.placeholder} обязателен`, (value) => {
+        //       return value instanceof File;
+        //     })
+        //     .required(`${input.placeholder} обязателен`);
+        //   break
+
         // case 'date':
         //   fieldSchema = yup.date().typeError(`${input.placeholder} должна быть датой`).required(`${input.placeholder} обязательна`);
         //   break;
@@ -136,7 +139,7 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
           }
           {!arrayInputData[indexStep + 1] &&
             <WarnMessageEnd>
-              Чтобы заполнить это поле, скопируйте url ссылку нужной вам картинки
+              Внимательно проверьте все данные перед создание product
             </WarnMessageEnd>}
           <Block justifyC style={{ marginTop: '15px' }}>
             {indexStep === 0 ?
@@ -163,6 +166,7 @@ export default AddPanelProduct;
 
 const ModalBlock = styled.div`
   position: fixed;
+  z-index: 1000;
 top: 0;
 left: 0;
 background-color: rgba(1, 1, 1, 0.3);
