@@ -2,8 +2,10 @@ import { Button, Text } from '@gravity-ui/uikit';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Block } from '../components/shared';
+import { useEffect, useState } from 'react';
 
 function DetailProductPage() {
+  const [priseDiscount, setPriseDiscount] = useState<number>(0)
   const { id } = useParams()
   const navigate = useNavigate()
   const product = {
@@ -16,6 +18,18 @@ function DetailProductPage() {
     count: 100,
     img: 'https://via.placeholder.com/150',
   }
+
+  useEffect(() => {
+    function CalcDiscount() {
+      const discount = (product.price * product.discount) / 100;
+      const newCount = product.price - discount
+      setPriseDiscount(parseFloat(newCount.toFixed(2)))
+    }
+
+    CalcDiscount()
+  }, [product])
+
+
   return (
     <Container>
       <LBlock>
@@ -28,10 +42,12 @@ function DetailProductPage() {
         <Block flexD gap='15px' padd='15px 30px'>
           <Text variant='body-3'>{product.name}</Text>
           <Text variant='caption-2' color='secondary'>{product.description}</Text>
-          <Block gap='5px'>
+          <Block gap='5px' flexD>
             <Text variant='caption-2' color='secondary'>{product.count}</Text>
-            <Text variant='caption-2' color='secondary'>{product.price}</Text>
+            <Text variant='caption-2' color='secondary'>Скидка: {product.discount}</Text>
+            <Text variant='caption-2' color='secondary'>Цена: {product.price} = {priseDiscount}</Text>
             <Text variant='caption-2' color='secondary'>{product.rating}</Text>
+
           </Block>
         </Block>
       </RBlock>

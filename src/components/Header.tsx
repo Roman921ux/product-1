@@ -1,13 +1,17 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Block } from './shared';
 import { showPanelAtom } from '../atoms/product';
 import { useAtom } from 'jotai';
 import { Button, Text } from '@gravity-ui/uikit';
 import AddPanelProduct, { IStepInput } from './AddPanelProduct';
+import { isAuthUserAtom } from '../atoms/auth';
 
 function Header() {
   const [show, setShow] = useAtom(showPanelAtom);
+  const [iaAuth, setIsAuth] = useAtom(isAuthUserAtom);
+  const navigate = useNavigate()
+
   const handleCloseMadel = () => {
     setShow(false)
   }
@@ -69,10 +73,23 @@ function Header() {
     <Container>
       <Block justifyC alignI='center'>
         <Text variant='header-1'>SNEAKERS</Text>
+
+        {iaAuth ? 'true' : 'false'}
         <Block gap='15px' alignI='center'>
           <StyledNavLink to='/'>Products</StyledNavLink>
-          <StyledNavLink to='/basket'>Basket</StyledNavLink>
-          <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
+          {iaAuth ? (
+            <>
+              <StyledNavLink to='/profile'>Profile</StyledNavLink>
+              <StyledNavLink to='/basket'>Basket</StyledNavLink>
+              <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
+            </>
+          ) :
+            (
+              <>
+                <Button view='raised' onClick={() => navigate('/login')}>Войти</Button>
+              </>
+            )
+          }
         </Block>
       </Block>
       <AddPanelProduct show={show} onClose={handleCloseMadel} arrayInputData={prevData} />

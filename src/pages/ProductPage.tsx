@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import ProductItem from '../components/product/ProductItem';
 import { IProduct } from '../types/product';
+import { useEffect } from 'react';
 
 function ProductPage() {
 
@@ -106,6 +107,14 @@ function ProductPage() {
       img: 'https://via.placeholder.com/150',
     },
   ];
+  useEffect(() => {
+    async function fethcProduct() {
+      const res = await fetch(`https://vol.hivee.tech/api/products`);
+      const data = await res.json()
+      console.log(data)
+    }
+    fethcProduct()
+  }, [])
   return (
     <Container>
       <FlexBlock>
