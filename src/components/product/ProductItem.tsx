@@ -65,7 +65,7 @@ function ProductItem({ product }: Props) {
 export default ProductItem;
 
 const Container = styled.div`
-  border: 1px solid rgba(1,1,1, 0.2);
+  border: 1px solid rgba(1,1,1, 0.15);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 5px;
@@ -93,7 +93,7 @@ export const Img = styled.img`
 `;
 const Title = styled.div`
 `;
-const Prise = styled.div`
+export const Prise = styled.div`
   text-decoration: line-through;
 `;
 const Text = styled.div`
