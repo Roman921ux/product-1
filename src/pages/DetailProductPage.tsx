@@ -49,9 +49,11 @@ function DetailProductPage() {
           <Button onClick={() => navigate('/')}>Назад</Button>
           <Button selected view='action' onClick={addToBasketProduct}>В корзину</Button>
         </Block>
-        <Block flexD gap='15px' padd='15px 30px'>
-          <Text variant='display-3'>{product.name}</Text>
-          <Text variant='caption-2' color='secondary'>{product.description}</Text>
+        <Block flexD gap='30px' padd='15px 30px'>
+          <Block flexD gap='15px'>
+            <Text variant='display-3'>{product.name}</Text>
+            <Text variant='caption-2' color='secondary'>{product.description}</Text>
+          </Block>
           <Block gap='5px' flexD>
             <Label theme="normal" value={`${priseDiscount} рублей`}>
               <Text variant='code-2' color='secondary'>Цена</Text>

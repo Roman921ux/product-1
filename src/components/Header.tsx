@@ -100,7 +100,8 @@ function Header() {
 export default Header;
 
 const Container = styled.div`
-  padding: 15px 30px;
+
+  padding: 15px 30px; 
   background-color: #000;
   color: #fff;
 `;
