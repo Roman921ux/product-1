@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import ProductItem from '../components/product/ProductItem';
 import BasketPanel from '../components/basket/BasketPanel';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { IProduct } from '../types/product'
 import { useQuery } from 'react-query';
 

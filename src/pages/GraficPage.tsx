@@ -22,20 +22,7 @@ function GraficPage() {
     queryFn: fetchData
   })
 
-  const salesData = [
-    {
-      "day": "2023-07-01",
-      "sales_count": 150
-    },
-    {
-      "day": "2023-07-02",
-      "sales_count": 200
-    },
-    {
-      "day": "2023-07-03",
-      "sales_count": 175
-    }
-  ];
+
 
   if (isLoading) {
     return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader size="s" /></div>
