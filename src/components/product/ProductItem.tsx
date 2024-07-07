@@ -10,7 +10,6 @@ import { Star } from '@gravity-ui/icons';
 
 interface Props {
   product: IProduct;
-  products?: IProduct[];
 }
 
 function ProductItem({ product }: Props) {
