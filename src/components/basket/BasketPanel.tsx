@@ -17,7 +17,7 @@ async function orderProduct() {
 function BasketPanel() {
   return (
     <Container>
-      <Button selected view='action' onClick={orderProduct}>Офромить заказ</Button>
+      <Button selected view='outlined-success' onClick={orderProduct}>Офромить заказ</Button>
     </Container>
   );
 }
@@ -25,16 +25,16 @@ function BasketPanel() {
 export default BasketPanel;
 
 const Container = styled.div`
-  position: fixed;
+  /* position: fixed; */
   display: flex;
   align-items: center;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(1,1,1, 0.2);
   border-radius: 5px;
-  width: 90%;
+  width: 100%;
 
   height: 50px;
   padding: 0px 15px;
-
+  margin-top: -20px;
 `;

@@ -149,9 +149,9 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
   return (
     <ModalBlock>
       <Content>
-        <Text variant='header-2'>Создание товара</Text>
+        <Text variant='header-2'>Создание книжки</Text>
         <WarnMessage>
-          Будте аккуратны при заполнение данных карточки товара, если вы допустите ошибку,
+          Будте аккуратны при заполнение данных карточки, если вы допустите ошибку,
           вам придется удалить эту карточку
         </WarnMessage>
         <Form onSubmit={handleSubmit(submitDataForm)}>

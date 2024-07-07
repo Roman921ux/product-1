@@ -44,22 +44,22 @@ function Header() {
 
   const prevData: IStepInput[] = [
     {
-      nameStep: 'Шаг 1 - Название и описание товара',
+      nameStep: 'Шаг 1 - Название и описание книжки',
       arrayInput: [
         {
           type: 'text',
-          placeholder: 'Название товара',
+          placeholder: 'Название книжки',
           name: 'name'
         },
         {
           type: 'text',
-          placeholder: 'Название товара',
+          placeholder: 'Название книжки',
           name: 'description'
         }
       ]
     },
     {
-      nameStep: 'Шаг 2 - Цена, колличесвто, скидка и рейтинг товара',
+      nameStep: 'Шаг 2 - Цена, колличесвто, скидка и рейтинг книжки',
       arrayInput: [
         {
           type: 'number',
@@ -84,7 +84,7 @@ function Header() {
       ]
     },
     {
-      nameStep: 'Шаг 3 - Изображение товара',
+      nameStep: 'Шаг 3 - Изображение книжки',
       arrayInput: [
         {
           type: 'url',
@@ -97,24 +97,24 @@ function Header() {
 
   return (
     <Container>
-      <Block justifyC alignI='center'>
-        <Text variant='header-1'>SNEAKERS</Text>
+      <Block flexD gap='30px'>
+        <Text variant='header-2'>BOOKSHOP</Text>
 
         {/* {iaAuth ? 'true' : 'false'} */}
-        <Block gap='15px' alignI='center'>
-          <StyledNavLink to='/'>Products</StyledNavLink>
+        <Block flexD gap='15px'>
+          <StyledNavLink to='/'>Книги</StyledNavLink>
           {iaAuth ? (
             <>
               <StyledNavLink to='/grafic'>График</StyledNavLink>
-              <StyledNavLink to='/basket'>Basket</StyledNavLink>
-              <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
-              <Button view='raised' onClick={logOut}>Выйти</Button>
-              <Button selected view='raised' onClick={handleDownload}>Скачать данные</Button>
+              <StyledNavLink to='/basket'>Корзина</StyledNavLink>
+              <LinkBtn onClick={() => setShow(true)}>Написать книжку</LinkBtn>
+              <LinkBtn onClick={logOut}>Выйти</LinkBtn>
+              <LinkBtn onClick={handleDownload}>Загрузить</LinkBtn>
             </>
           ) :
             (
               <>
-                <Button view='raised' onClick={() => navigate('/login')}>Войти</Button>
+                <LinkBtn onClick={() => navigate('/login')}>Войти</LinkBtn>
               </>
             )
           }
@@ -128,19 +128,42 @@ function Header() {
 export default Header;
 
 const Container = styled.div`
-/* width: 10%; */
-  padding: 15px 30px; 
-  background-color: #000;
+/* border: 1px solid red; */
+width: 15%;
+display: flex;
+height: 100vh;
+  padding: 30px; 
+  background-color: #0f1b2d;
   color: #fff;
 `;
 
 const StyledNavLink = styled(NavLink)`
   color: #fff;
+  transition: all 300ms ease-in;
   
  &:active {
-   color: #a572f3; 
+   /* color: #a572f3;  */
   }
   &:hover {
-   color: #a572f3;
+    color: #fff;
+
+   /* color: #a572f3; */
+   padding-left: 5px;
+ }
+`
+
+const LinkBtn = styled.span`
+  color: #fff;
+  cursor: pointer;
+  transition: all 300ms ease-in;
+
+  
+ &:active {
+   /* color: #a572f3;  */
+  }
+  &:hover {
+   /* color: #a572f3; */
+   cursor: pointer;
+   padding-left: 5px;
  }
 `

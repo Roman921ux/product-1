@@ -16,7 +16,7 @@ function Main({ children }: Props) {
 export default Main;
 
 const Container = styled.div`
-/* width: 90%; */
+width: 85%;
   padding: 15px 30px;
   margin-top: 20px;
 `;
