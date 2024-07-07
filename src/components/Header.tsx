@@ -83,6 +83,7 @@ function Header() {
           <StyledNavLink to='/'>Products</StyledNavLink>
           {iaAuth ? (
             <>
+              <StyledNavLink to='/grafic'>График</StyledNavLink>
               <StyledNavLink to='/basket'>Basket</StyledNavLink>
               <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
               <Button view='raised' onClick={logOut}>Выйти</Button>

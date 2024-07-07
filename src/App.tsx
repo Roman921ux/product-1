@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage'
 import AuthProvider from './hooks/AuthProvider'
 import { useAtom } from 'jotai'
 import { isAuthUserAtom } from './atoms/auth'
+import GraficPage from './pages/GraficPage'
 
 function App() {
   const [iaAuth, setIsAuth] = useAtom(isAuthUserAtom);
@@ -23,6 +24,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Lauout />}>
         <Route path='/' element={<ProductPage />} />
+        <Route path='/grafic' element={<GraficPage />} />
         <Route path='/:id' element={<DetailProductPage />} />
         <Route path='/basket' element={
           <AuthProvider>
