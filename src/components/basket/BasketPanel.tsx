@@ -1,10 +1,23 @@
 import { Button } from '@gravity-ui/uikit';
+import axios from 'axios';
 import styled from 'styled-components';
+
+async function orderProduct() {
+  const token = window.localStorage.getItem('token');
+  const res = await axios.get('https://vol.hivee.tech/api/buy', {
+    headers: {
+      'Authorization': `${token}`,
+    }
+  });
+  const data = await res.data;
+  console.log('BasketPanel', data);
+  return data
+}
 
 function BasketPanel() {
   return (
     <Container>
-      <Button selected view='action'>Офромить заказ</Button>
+      <Button selected view='action' onClick={orderProduct}>Офромить заказ</Button>
     </Container>
   );
 }

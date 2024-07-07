@@ -30,6 +30,8 @@ async function fethcProduct(): Promise<IProduct[]> {
   return data
 }
 
+
+
 function BasketPage() {
   // const [productsBasket, setProductsBasket] = useState<IApiResponse>()
   const { data } = useQuery({

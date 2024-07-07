@@ -2,9 +2,10 @@ import { Loader } from '@gravity-ui/uikit';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import SalesChart from '../components/graf/GrafComponent';
 
 
-interface IGraf {
+export interface IGraf {
   day: string;
   sales_count: number;
 }
@@ -58,6 +59,7 @@ function GraficPage() {
           ))}
         </tbody>
       </Table>
+      {data && <SalesChart data={data} />}
     </Container>
   );
 }
@@ -69,6 +71,8 @@ const Container = styled.div`
   width: 100%; 
   /* height: 100vh; */
 display: flex;
+gap: 15px;
+flex-direction: column;
 justify-content: center;
 align-items: center;
 `
