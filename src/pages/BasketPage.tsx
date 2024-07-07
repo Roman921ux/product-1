@@ -4,20 +4,21 @@ import BasketPanel from '../components/basket/BasketPanel';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { IProduct } from '../types/product'
+import { useQuery } from 'react-query';
 
-interface IApiResponse {
-  id: number;
-  user_id: number;
-  User: {
-    id: number;
-    username: string;
-    password: string;
-    token: string;
-  };
-  products: IProduct[] | null; // здесь any[] можно заменить на конкретный тип продуктов, если они известны
-}
+// interface IApiResponse {
+//   id: number;
+//   user_id: number;
+//   User: {
+//     id: number;
+//     username: string;
+//     password: string;
+//     token: string;
+//   };
+//   products: IProduct[] | null; // здесь any[] можно заменить на конкретный тип продуктов, если они известны
+// }
 
-async function fethcProduct(): Promise<IApiResponse> {
+async function fethcProduct(): Promise<IProduct[]> {
   const token = window.localStorage.getItem('token');
   const res = await axios.get('https://vol.hivee.tech/api/basket', {
     headers: {
@@ -25,25 +26,29 @@ async function fethcProduct(): Promise<IApiResponse> {
     }
   });
   const data = await res.data;
+  console.log('BasketPageData', data);
   return data
 }
 
 function BasketPage() {
-  const [productsBasket, setProductsBasket] = useState<IApiResponse>()
+  // const [productsBasket, setProductsBasket] = useState<IApiResponse>()
+  const { data } = useQuery({
+    queryKey: ['basket'],
+    queryFn: fethcProduct
+  })
 
-  useEffect(() => {
-    fethcProduct().then(res => {
-      console.log('BasketPageData', res);
-      console.log('BasketPageData', res)
-      setProductsBasket(res)
-    })
-  }, [])
+  // useEffect(() => {
+  //   fethcProduct().then(res => {
+  //     console.log('BasketPageData', res);
+  //     setProductsBasket(res)
+  //   })
+  // }, [])
 
   return (
     <Container>
       <BasketPanel />
       <FlexBlock>
-        {productsBasket?.products && productsBasket?.products.map(product => <ProductItem product={product} />)}
+        {data?.map(product => <ProductItem key={product.id} product={product} />)}
       </FlexBlock>
     </Container>
   );

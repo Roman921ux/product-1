@@ -6,6 +6,27 @@ import { useAtom } from 'jotai';
 import { Button, Text } from '@gravity-ui/uikit';
 import AddPanelProduct, { IStepInput } from './AddPanelProduct';
 import { isAuthUserAtom } from '../atoms/auth';
+import axios from 'axios';
+
+
+async function handleDownload() {
+  try {
+    const response = await axios.get('https://vol.hivee.tech/api/data', {
+      responseType: 'blob', // Это важно для обработки бинарных данных
+    });
+
+    // Создаем URL для скачивания файла
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'data.json'); // Вы можете задать любое имя файла
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode?.removeChild(link);
+  } catch (error) {
+    console.error('Error downloading the file', error);
+  }
+};
 
 function Header() {
   const [show, setShow] = useAtom(showPanelAtom);
@@ -18,6 +39,7 @@ function Header() {
   const logOut = () => {
     setIsAuth(false)
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
   }
 
   const prevData: IStepInput[] = [
@@ -87,7 +109,7 @@ function Header() {
               <StyledNavLink to='/basket'>Basket</StyledNavLink>
               <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
               <Button view='raised' onClick={logOut}>Выйти</Button>
-              <Button selected view='raised' >Скачать данные</Button>
+              <Button selected view='raised' onClick={handleDownload}>Скачать данные</Button>
             </>
           ) :
             (

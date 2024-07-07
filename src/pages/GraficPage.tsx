@@ -1,6 +1,26 @@
+import { Loader } from '@gravity-ui/uikit';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
+
+interface IGraf {
+  day: string;
+  sales_count: number;
+}
+
+async function fetchData(): Promise<IGraf[]> {
+  const res = await axios.get('https://vol.hivee.tech/api/graf');
+  const data = await res.data
+  return data
+}
+
 function GraficPage() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['grafic'],
+    queryFn: fetchData
+  })
+
   const salesData = [
     {
       "day": "2023-07-01",
@@ -16,6 +36,10 @@ function GraficPage() {
     }
   ];
 
+  if (isLoading) {
+    return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader size="s" /></div>
+  }
+
   return (
     <Container>
       <Table>
@@ -26,7 +50,7 @@ function GraficPage() {
           </tr>
         </thead>
         <tbody>
-          {salesData.map((item, index) => (
+          {data?.map((item, index) => (
             <tr key={index}>
               <Td>{item.day}</Td>
               <Td>{item.sales_count}</Td>

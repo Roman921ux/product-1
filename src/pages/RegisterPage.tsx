@@ -29,6 +29,7 @@ function RegisterPage() {
 
     await registerFetch(value).then(data => {
       console.log('DataRegister', data)
+      localStorage.setItem('userId', data.id);
       navigate('/login')
     })
 

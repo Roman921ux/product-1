@@ -7,8 +7,18 @@ import { IProduct } from '../types/product';
 //
 import axios from '../utils/axios'
 
-
+// {
+// "user_id": 31,
+// "products": [
+//   {
+//     "product_id": 30
+//   }
+// ]
+// }
 // /api/product
+
+
+
 function DetailProductPage() {
   const [data, setDate] = useState<IProduct | null>(null)
   const { id } = useParams<{ id: string }>(); // Получаем id из параметров URL
@@ -17,6 +27,32 @@ function DetailProductPage() {
   const [priseDiscount, setPriseDiscount] = useState<number>(0)
 
   const navigate = useNavigate()
+
+
+  async function fetchData(productId: number) {
+    const token = await window.localStorage.getItem('token');
+    const userId = await window.localStorage.getItem('userId');
+
+    const body = {
+      user_id: parseInt(userId as string),
+      products: [
+        {
+          product_id: productId
+        }
+      ]
+    }
+    console.log('body add basket', body)
+    const res = await axios.post('https://vol.hivee.tech/api/basket', body, {
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await res.data;
+    console.log('Answer Add', data)
+    return data;
+  }
 
   useEffect(() => {
     async function fetchProduct(id: number): Promise<IProduct> {
@@ -32,10 +68,8 @@ function DetailProductPage() {
 
 
 
-  function addToBasketProduct() {
-    // запрос на создания продукта в корзине
-    // используй axios, создай инстанс с базовой ссылкой 
-    // там-же можно вшить заголовок с token(ом)
+  async function addToBasketProduct() {
+    await fetchData(data?.id as number).then(res => console.log('AddtoBasket page', res))
   }
 
   useEffect(() => {
