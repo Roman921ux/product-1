@@ -15,6 +15,10 @@ function Header() {
   const handleCloseMadel = () => {
     setShow(false)
   }
+  const logOut = () => {
+    setIsAuth(false)
+    localStorage.removeItem('token');
+  }
 
   const prevData: IStepInput[] = [
     {
@@ -61,7 +65,7 @@ function Header() {
       nameStep: 'Шаг 3 - Изображение товара',
       arrayInput: [
         {
-          type: 'file',
+          type: 'url',
           placeholder: 'Ссылка url',
           name: 'img'
         }
@@ -74,14 +78,15 @@ function Header() {
       <Block justifyC alignI='center'>
         <Text variant='header-1'>SNEAKERS</Text>
 
-        {iaAuth ? 'true' : 'false'}
+        {/* {iaAuth ? 'true' : 'false'} */}
         <Block gap='15px' alignI='center'>
           <StyledNavLink to='/'>Products</StyledNavLink>
           {iaAuth ? (
             <>
-              <StyledNavLink to='/profile'>Profile</StyledNavLink>
               <StyledNavLink to='/basket'>Basket</StyledNavLink>
               <Button view='raised' onClick={() => setShow(true)}>Создать товар</Button>
+              <Button view='raised' onClick={logOut}>Выйти</Button>
+              <Button selected view='raised' >Скачать данные</Button>
             </>
           ) :
             (

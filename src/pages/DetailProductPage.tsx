@@ -1,24 +1,36 @@
-import { Button, Label, Text } from '@gravity-ui/uikit';
+import { Button, Label, Loader, Text } from '@gravity-ui/uikit';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Block } from '../components/shared';
 import { useEffect, useState } from 'react';
-import { Prise } from '../components/product/ProductItem';
+import { IProduct } from '../types/product';
+//
+import axios from '../utils/axios'
 
+
+// /api/product
 function DetailProductPage() {
+  const [data, setDate] = useState<IProduct | null>(null)
+  const { id } = useParams<{ id: string }>(); // Получаем id из параметров URL
+  const productId = parseInt(id as string, 10); // Преобразуем id в число
+
   const [priseDiscount, setPriseDiscount] = useState<number>(0)
-  const { id } = useParams()
+
   const navigate = useNavigate()
-  const product = {
-    id: 1,
-    name: 'Product 1',
-    description: 'Description for prcript  or prcript scription fo or prcript scription fo  or prcript scription fo or prcript scription fo or prcript scription fo or prcript scription foscription fo or product sr',
-    price: 29.99,
-    rating: 4.5,
-    discount: 10,
-    count: 100,
-    img: 'https://via.placeholder.com/150',
-  }
+
+  useEffect(() => {
+    async function fetchProduct(id: number): Promise<IProduct> {
+      const res = await axios.get(`https://vol.hivee.tech/api/product`, {
+        params: { id }
+      });
+      console.log('DetailProduct', res.data)
+
+      return res.data;
+    }
+    fetchProduct(productId).then(res => setDate(res))
+  }, [])
+
+
 
   function addToBasketProduct() {
     // запрос на создания продукта в корзине
@@ -28,20 +40,26 @@ function DetailProductPage() {
 
   useEffect(() => {
     function CalcDiscount() {
-      const discount = (product.price * product.discount) / 100;
-      const newCount = product.price - discount
-      setPriseDiscount(parseFloat(newCount.toFixed(2)))
+      if (data) {
+        const discount = (data?.price * data?.discount) / 100;
+        const newCount = data?.price - discount
+        setPriseDiscount(parseFloat(newCount.toFixed(2)))
+      }
     }
 
     CalcDiscount()
-  }, [product])
+  }, [data])
 
+
+  if (!data) {
+    return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader size="s" /></div>
+  }
 
   return (
     <Container>
       <LBlock>
         <ImgBlock>
-          <Img src={product.img} />
+          <Img src={data?.img} />
         </ImgBlock>
       </LBlock>
       <RBlock>
@@ -51,20 +69,20 @@ function DetailProductPage() {
         </Block>
         <Block flexD gap='30px' padd='15px 30px'>
           <Block flexD gap='15px'>
-            <Text variant='display-3'>{product.name}</Text>
-            <Text variant='caption-2' color='secondary'>{product.description}</Text>
+            <Text variant='display-3'>{data?.name}</Text>
+            <Text variant='caption-2' color='secondary'>{data?.description}</Text>
           </Block>
           <Block gap='5px' flexD>
             <Label theme="normal" value={`${priseDiscount} рублей`}>
               <Text variant='code-2' color='secondary'>Цена</Text>
             </Label>
-            <Label theme="normal" value={`${product.discount} %`}>
+            <Label theme="normal" value={`${data?.discount} %`}>
               <Text variant='code-2' color='secondary'>Скидка</Text>
             </Label>
-            <Label theme="normal" value={`${product.count} едениц`}>
+            <Label theme="normal" value={`${data?.count} едениц`}>
               <Text variant='code-2' color='secondary'>Колличество</Text>
             </Label>
-            <Label theme="normal" value={`${product.rating}`}>
+            <Label theme="normal" value={`${data?.rating}`}>
               <Text variant='code-2' color='secondary'>Рейтинг</Text>
             </Label>
           </Block>

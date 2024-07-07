@@ -1,56 +1,49 @@
 import styled from 'styled-components';
-import { IProduct } from '../types/product';
 import ProductItem from '../components/product/ProductItem';
 import BasketPanel from '../components/basket/BasketPanel';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { IProduct } from '../types/product'
+
+interface IApiResponse {
+  id: number;
+  user_id: number;
+  User: {
+    id: number;
+    username: string;
+    password: string;
+    token: string;
+  };
+  products: IProduct[] | null; // здесь any[] можно заменить на конкретный тип продуктов, если они известны
+}
+
+async function fethcProduct(): Promise<IApiResponse> {
+  const token = window.localStorage.getItem('token');
+  const res = await axios.get('https://vol.hivee.tech/api/basket', {
+    headers: {
+      'Authorization': `${token}`,
+    }
+  });
+  const data = await res.data;
+  return data
+}
 
 function BasketPage() {
-  const productsBasket: IProduct[] = [
-    {
-      id: 1,
-      name: 'Product 1',
-      description: 'Description for product 1',
-      price: 29.99,
-      rating: 4.5,
-      discount: 10,
-      count: 100,
-      img: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      description: 'Description for product 2',
-      price: 49.99,
-      rating: 4.0,
-      discount: 5,
-      count: 200,
-      img: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 3,
-      name: 'Product 3',
-      description: 'Description for product 3',
-      price: 19.99,
-      rating: 3.5,
-      discount: 15,
-      count: 300,
-      img: 'https://via.placeholder.com/150',
-    },
-    {
-      id: 4,
-      name: 'Product 4',
-      description: 'Description for product 4',
-      price: 39.99,
-      rating: 4.8,
-      discount: 20,
-      count: 150,
-      img: 'https://via.placeholder.com/150',
-    }
-  ];
+  const [productsBasket, setProductsBasket] = useState<IApiResponse>()
+
+  useEffect(() => {
+    fethcProduct().then(res => {
+      console.log('BasketPageData', res);
+      console.log('BasketPageData', res)
+      setProductsBasket(res)
+    })
+  }, [])
+
   return (
     <Container>
       <BasketPanel />
       <FlexBlock>
-        {productsBasket.map(product => <ProductItem product={product} />)}
+        {productsBasket?.products && productsBasket?.products.map(product => <ProductItem product={product} />)}
       </FlexBlock>
     </Container>
   );

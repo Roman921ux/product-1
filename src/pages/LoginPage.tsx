@@ -1,19 +1,28 @@
 import styled from 'styled-components';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-// import { useAppDispatch } from '../feature/redux-hook';
-// import { loginThunk } from '../feature/user/user-slice';
-// toast
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import axios from '../utils/axios'
+import { isAuthUserAtom } from '../atoms/auth';
+import { useAtom } from 'jotai';
 
+async function loginFetch(body: any) {
+  console.log('DataLogin', body)
+  try {
+    const res = await axios.post('/auth/login', body);
+    return res.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+}
 
 function LoginPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [iaAuth, setIsAuth] = useAtom(isAuthUserAtom);
   // const { _id } = useAppSelector(state => state.user.userInfo)
   // const dispatch = useAppDispatch()
   const [value, setValue] = useState({
-    email: '',
+    username: '',
     password: ''
   })
 
@@ -23,47 +32,20 @@ function LoginPage() {
       return { ...prev, [name]: value }
     })
   }
-  const onSubmitForm = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Обработка отправки формы
+
+    await loginFetch(value).then(data => {
+      localStorage.setItem('token', data.token);
+      setIsAuth(true);
+      navigate('/')
+      console.log('iaAuth', iaAuth);
+    })
     console.log(value);
     setValue({
-      email: '',
+      username: '',
       password: ''
     })
-    // dispatch(loginThunk(value))
-    //   .then((response) => {
-    //     if (response.meta.requestStatus === 'rejected') {
-    //       toast.error('Ошибка при авторизации!', {
-    //         position: "top-right",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //       throw new Error('Ошибка при регистрации пользователя');
-    //     } else {
-    //       toast.success('Вы авторизованы!', {
-    //         position: "top-right",
-    //         autoClose: 1000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //       setTimeout(() => {
-    //         navigate(`/profile`)
-    //       }, 2000);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error('Ошибка при регистрации пользователя:', error.message);
-    //   });
   }
   return (
     <Container>
@@ -72,7 +54,7 @@ function LoginPage() {
       <RightBlock>
         <Title>LOG IN</Title>
         <Form onSubmit={onSubmitForm}>
-          <Input placeholder='Email:' name='email' type='email' value={value.email} onChange={onChangeValue} />
+          <Input placeholder='Name:' name='username' type='text' value={value.username} onChange={onChangeValue} />
           <Input placeholder='Password:' name='password' type='password' value={value.password} onChange={onChangeValue} />
           <Button type='submit'>Войти</Button>
         </Form>

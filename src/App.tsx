@@ -3,7 +3,6 @@ import Lauout from './Lauout'
 import ProductPage from './pages/ProductPage'
 import DetailProductPage from './pages/DetailProductPage'
 import BasketPage from './pages/BasketPage'
-import ProfilePage from './pages/ProfilePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import AuthProvider from './hooks/AuthProvider'
@@ -17,6 +16,7 @@ function App() {
 
   if (token) {
     setIsAuth(true);
+    console.log(iaAuth)
   }
 
   return (
@@ -27,11 +27,6 @@ function App() {
         <Route path='/basket' element={
           <AuthProvider>
             <BasketPage />
-          </AuthProvider>
-        } />
-        <Route path='/profile' element={
-          <AuthProvider>
-            <ProfilePage />
           </AuthProvider>
         } />
         <Route path='/login' element={<LoginPage />} />

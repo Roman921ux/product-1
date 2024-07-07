@@ -9,7 +9,8 @@ import { Box } from '@gravity-ui/icons';
 import { Star } from '@gravity-ui/icons';
 
 interface Props {
-  product: IProduct
+  product: IProduct;
+  products?: IProduct[];
 }
 
 function ProductItem({ product }: Props) {
@@ -95,6 +96,7 @@ export const Img = styled.img`
 		/* left: 50%; 
 		top: 60%;  */
 	width: 100%; 
+  height: 100%;
 		/* height: 540px;  */
 		/* transform: translate(-50%, -50%);  */
 `;
@@ -102,7 +104,4 @@ const Title = styled.div`
 `;
 export const Prise = styled.div`
   text-decoration: line-through;
-`;
-const Text = styled.div`
-
 `;

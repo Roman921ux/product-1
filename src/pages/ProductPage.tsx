@@ -1,9 +1,20 @@
 import styled from 'styled-components';
 import ProductItem from '../components/product/ProductItem';
 import { IProduct } from '../types/product';
-import { useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { Loader } from '@gravity-ui/uikit';
+
+async function fethcProduct(): Promise<IProduct[]> {
+  const res = await fetch(`https://vol.hivee.tech/api/products`);
+  const data = await res.json();
+  return data
+}
 
 function ProductPage() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['locations'],
+    queryFn: fethcProduct
+  });
 
   const products: IProduct[] = [
     {
@@ -14,7 +25,7 @@ function ProductPage() {
       rating: 4.5,
       discount: 10,
       count: 100,
-      img: 'https://via.placeholder.com/150',
+      img: 'https://ae01.alicdn.com/kf/HTB1VEqYLVXXXXaiXFXXq6xXFXXX8.jpg',
     },
     {
       id: 2,
@@ -107,18 +118,14 @@ function ProductPage() {
       img: 'https://via.placeholder.com/150',
     },
   ];
-  useEffect(() => {
-    async function fethcProduct() {
-      const res = await fetch(`https://vol.hivee.tech/api/products`);
-      const data = await res.json()
-      console.log(data)
-    }
-    fethcProduct()
-  }, [])
+
+  if (isLoading) {
+    return <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Loader size="s" /></div>
+  }
   return (
     <Container>
       <FlexBlock>
-        {products.map(product => <ProductItem product={product} />)}
+        {data?.map(product => <ProductItem product={product} products={products} />)}
       </FlexBlock>
     </Container>
   );
@@ -136,4 +143,7 @@ const FlexBlock = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 15px; 
+  /* display: grid;
+  grid-auto-flow: flow;
+  gap: 15px; */
 `;

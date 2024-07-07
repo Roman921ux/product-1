@@ -7,9 +7,10 @@ import { Block } from './shared/index';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
+import axios from 'axios';
 
 
-type Type = "number" | "text" | "search" | "tel" | "url" | "email" | "password" | "file";
+type Type = "number" | "text" | "search" | "tel" | "url" | "email" | "password";
 
 type InputName = 'name' | 'description' | 'price' | 'rating' | 'discount' | 'count' | 'img';
 
@@ -28,6 +29,44 @@ interface Props {
   show: boolean;
   onClose: () => void;
   arrayInputData: IStepInput[]
+}
+
+interface IBody {
+  count: string;
+  description: string;
+  discount: string;
+  img: string;
+  name: string;
+  price: string;
+  rating: string;
+}
+
+// https://torange.biz/photo/15/HD/trade-torn-shoes-cheap-sneakers-15442.jpg
+async function createProduct(body: IBody) {
+  const token = window.localStorage.getItem('token');
+  const finalBody = {
+    count: parseInt(body.count),
+    description: body.description,
+    discount: parseInt(body.discount),
+    img: body.img,
+    name: body.name,
+    price: parseInt(body.price),
+    rating: parseInt(body.rating)
+  }
+  if (token) {
+    console.log('token', token)
+    console.log('body', finalBody)
+    const res = await axios.post('https://vol.hivee.tech/api/product', finalBody, {
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await res.data;
+    return data;
+  } else {
+    console.error('Token is missing');
+  }
 }
 
 function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
@@ -86,12 +125,16 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
 
     return yup.object().shape(schemaFields);
   };
-  function submitDataForm(data: any) {
+  async function submitDataForm(data: any) {
     if (!arrayInputData[indexStep + 1]) {
       alert('Форма подошла к концу');
-      console.log('dataFrom', data);
+      console.log('dataFrom сверху', data);
+      console.log('dataFrom сверху', formData);
       // setFormData(prev => ({ ...prev, ...data }));
       // console.log('Данные всей формы', formData);
+      await createProduct(data)
+        .then(res => console.log('createProductResult', res))
+        .catch(err => console.log('createProductRrror', err))
       setFormData({});
       setIndexStep(0);
       onClose();
@@ -99,7 +142,7 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
       return
     }
     setFormData(prev => ({ ...prev, ...data }));
-    console.log('data', data);
+    console.log('Formdata снизу', data);
     setIndexStep(prev => prev + 1)
   }
 
@@ -115,16 +158,16 @@ function AddPanelProduct({ show, onClose, arrayInputData }: Props) {
           <TitleStep>{arrayInputData[indexStep].nameStep}</TitleStep>
           {/* здесь мапяться инпуты */}
           {arrayInputData[indexStep].arrayInput.map(input => {
-            if (input.type === "file") {
-              return <input
-                type={input.type}
-                key={input.name}
-                placeholder={input.placeholder}
-                {...register(`${input.name}`)}
-              // errorMessage={errors[input.name as InputName]?.message as React.ReactNode}
-              // validationState={errors[input.name] && 'invalid'}
-              />
-            }
+            // if (input.type === "file") {
+            //   return <input
+            //     type={input.type}
+            //     key={input.name}
+            //     placeholder={input.placeholder}
+            //     {...register(`${input.name}`)}
+            //   // errorMessage={errors[input.name as InputName]?.message as React.ReactNode}
+            //   // validationState={errors[input.name] && 'invalid'}
+            //   />
+            // }
             return <TextInput
               type={input.type}
               key={input.name}
