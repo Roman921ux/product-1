@@ -17,5 +17,5 @@ function Lauout() {
 export default Lauout;
 
 const Container = styled.div`
-  /* display: flex; */
+  display: flex;
 `;
